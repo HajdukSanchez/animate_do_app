@@ -1,3 +1,4 @@
+import 'package:animate_do_app/src/enums/enums.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,11 @@ class HomePage extends StatelessWidget {
         title:
             FadeIn(duration: const Duration(milliseconds: 2000), child: const Text("Animate Do")),
         actions: [
-          IconButton(onPressed: () {}, icon: const Icon(FontAwesomeIcons.twitter)),
+          IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, Routes.twitterPage.name);
+              },
+              icon: const Icon(FontAwesomeIcons.twitter)),
           SlideInLeft(
             from: 100,
             child: IconButton(
