@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
+import 'package:animate_do_app/src/models/models.dart';
 
 class NavigationPage extends StatelessWidget {
   const NavigationPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.pink,
-        title: const Text("Notifications page"),
+    return ChangeNotifierProvider(
+      create: (_) => NotificationModel(),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.pink,
+          title: const Text("Notifications page"),
+        ),
+        floatingActionButton: const _FloatingButton(),
+        bottomNavigationBar: const _BottomNavigation(),
       ),
-      floatingActionButton: const _FloatingButton(),
-      bottomNavigationBar: const _BottomNavigation(),
     );
   }
 }
@@ -24,10 +31,18 @@ class _FloatingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
         backgroundColor: Colors.pink,
-        onPressed: () {},
+        onPressed: () => onTapFloaingButton(context),
         child: const Icon(
           FontAwesomeIcons.play,
         ));
+  }
+
+  void onTapFloaingButton(
+    BuildContext context,
+  ) {
+    final int oldNumber =
+        Provider.of<NotificationModel>(context, listen: false).numberOfNotifications;
+    Provider.of<NotificationModel>(context, listen: false).numberOfNotifications = oldNumber + 1;
   }
 }
 
@@ -36,6 +51,8 @@ class _BottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final int numberOfNotifications = Provider.of<NotificationModel>(context).numberOfNotifications;
+
     return BottomNavigationBar(
       currentIndex: 0,
       selectedItemColor: Colors.pink,
@@ -53,9 +70,9 @@ class _BottomNavigation extends StatelessWidget {
                     height: 12,
                     alignment: Alignment.center,
                     decoration: const BoxDecoration(color: Colors.pink, shape: BoxShape.circle),
-                    child: const Text(
-                      "1",
-                      style: TextStyle(
+                    child: Text(
+                      "$numberOfNotifications",
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 8,
                       ),
