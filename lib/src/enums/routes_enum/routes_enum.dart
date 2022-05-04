@@ -1,0 +1,1 @@
+enum Routes { homePage }
