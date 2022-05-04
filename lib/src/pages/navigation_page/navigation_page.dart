@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -40,9 +41,14 @@ class _FloatingButton extends StatelessWidget {
   void onTapFloaingButton(
     BuildContext context,
   ) {
-    final int oldNumber =
-        Provider.of<NotificationModel>(context, listen: false).numberOfNotifications;
-    Provider.of<NotificationModel>(context, listen: false).numberOfNotifications = oldNumber + 1;
+    final NotificationModel notificationProvider =
+        Provider.of<NotificationModel>(context, listen: false);
+    notificationProvider.numberOfNotifications += 1;
+
+    if (notificationProvider.numberOfNotifications >= 2) {
+      notificationProvider.bounceController
+          .forward(from: 0); // Reproduce el efecto de rebote desde 0
+    }
   }
 }
 
@@ -65,16 +71,24 @@ class _BottomNavigation extends StatelessWidget {
                 Positioned(
                   top: 0,
                   right: 0,
-                  child: Container(
-                    width: 12,
-                    height: 12,
-                    alignment: Alignment.center,
-                    decoration: const BoxDecoration(color: Colors.pink, shape: BoxShape.circle),
-                    child: Text(
-                      "$numberOfNotifications",
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 8,
+                  child: BounceInDown(
+                    animate: numberOfNotifications > 0 ? true : false,
+                    child: Bounce(
+                      from: 20,
+                      controller: (controller) =>
+                          Provider.of<NotificationModel>(context).bounceController = controller,
+                      child: Container(
+                        width: 12,
+                        height: 12,
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(color: Colors.pink, shape: BoxShape.circle),
+                        child: Text(
+                          "$numberOfNotifications",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 8,
+                          ),
+                        ),
                       ),
                     ),
                   ),
