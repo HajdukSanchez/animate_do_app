@@ -1,1 +1,1 @@
-enum Routes { homePage }
+enum Routes { homePage, twitterPage }
