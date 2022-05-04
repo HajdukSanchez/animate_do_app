@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Animated Do app',
       routes: routes,
-      initialRoute: Routes.homePage.name,
+      initialRoute: Routes.navigationPage.name,
     );
   }
 }
